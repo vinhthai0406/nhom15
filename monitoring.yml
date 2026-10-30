@@ -1,0 +1,67 @@
+---
+# Cài Prometheus + Grafana (kube-prometheus-stack) tự động lên k3s.
+# Chạy trên server đầu tiên: k3s tự phát hiện file trong thư mục manifests và cài chart.
+- name: Cài monitoring (Prometheus + Grafana)
+  hosts: server[0]
+  become: true
+  vars:
+    grafana_admin_password: "nhom11"
+    grafana_nodeport: 30300
+  tasks:
+    - name: Tạo HelmChart kube-prometheus-stack
+      ansible.builtin.copy:
+        dest: /var/lib/rancher/k3s/server/manifests/monitoring.yaml
+        mode: "0600"
+        content: |
+          apiVersion: helm.cattle.io/v1
+          kind: HelmChart
+          metadata:
+            name: kube-prometheus-stack
+            namespace: kube-system
+          spec:
+            repo: https://prometheus-community.github.io/helm-charts
+            chart: kube-prometheus-stack
+            # version: "x.y.z"   # nên ghim phiên bản để lần cài sau giống lần này
+            targetNamespace: monitoring
+            createNamespace: true
+            valuesContent: |-
+              grafana:
+                adminPassword: "{{ grafana_admin_password }}"
+                service:
+                  type: NodePort
+                  nodePort: {{ grafana_nodeport }}
+                resources:
+                    requests:
+                      cpu: 50m
+                      memory: 256Mi
+                    limits:
+                      memory: 768Mi
+                sidecar:
+                  resources:
+                      requests:
+                        cpu: 20m
+                        memory: 64Mi
+                      limits:
+                        memory: 256Mi
+              prometheus:
+                prometheusSpec:
+                  retention: 3d
+                  retentionSize: 4GB
+                  resources:
+                    requests:
+                      cpu: 100m
+                      memory: 400Mi
+                    limits:
+                      memory: 800Mi
+              alertmanager:
+                enabled: false
+              # k3s chạy các thành phần này trong 1 tiến trình và chỉ bind localhost,
+              # nên tắt để khỏi hiện target "down"
+              kubeEtcd:
+                enabled: false
+              kubeControllerManager:
+                enabled: false
+              kubeScheduler:
+                enabled: false
+              kubeProxy:
+                enabled: false
