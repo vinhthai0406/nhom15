@@ -26,7 +26,7 @@ Clone playbook rồi chạy từ thư mục chứa repository `k3s-ansible`. L�
 ```bash
 git clone https://github.com/k3s-io/k3s-ansible.git
 cd k3s-ansible
-ansible-playbook playbooks/site.yml -i ../inventory.yml --ask-pass --ask-become-pass
+ansible-playbook playbooks/site.yml -i inventory.yml --ask-pass --ask-become-pass
 ```
 
 Nhập mật khẩu SSH và `sudo` khi Ansible hỏi.
