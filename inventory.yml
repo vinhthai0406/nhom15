@@ -3,22 +3,22 @@ k3s_cluster:
    server:               # số server phải LẺ (3, 5, 7) để etcd có quorum
      hosts:
        nhom15s1:
-         ansible_host: 192.168.1.11
+         ansible_host: 172.31.10.190
          ansible_user:  server01
        nhom15s2:
-         ansible_host: 192.168.1.12
+         ansible_host: 172.31.11.35
          ansible_user:  server02
-       nhom15s3:
-         ansible_host: 192.168.1.13
-         ansible_user:  server03
-   agent:
-     hosts:
-       nhom15a1:
-         ansible_host: 192.168.1.21
-         ansible_user:  agent01
-       nhom15a2:
-         ansible_host: 192.168.1.22
-         ansible_user:  agent02
+  #      nhom15s3:
+  #        ansible_host: 192.168.1.13
+  #        ansible_user:  server03
+  #  agent:
+  #    hosts:
+  #      nhom15a1:
+  #        ansible_host: 192.168.1.21
+  #        ansible_user:  agent01
+  #      nhom15a2:
+  #        ansible_host: 192.168.1.22
+  #        ansible_user:  agent02
  
  vars:
    ansible_port: 22
