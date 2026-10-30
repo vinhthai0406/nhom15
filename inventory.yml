@@ -1,51 +1,35 @@
-# inventory.yml cho k3s-ansible: cluster HA 3 server (embedded etcd) + 2 agent
-# Đặt file này trong thư mục ~/k3s-ansible rồi chạy:
-#   ansible all -i inventory.yml -m ping
-#   ansible-playbook playbooks/site.yml -i inventory.yml
-#
-# ĐỔI các giá trị đánh dấu "<-- SỬA" cho đúng với mạng và user của bạn.
- 
 k3s_cluster:
  children:
    server:               # số server phải LẺ (3, 5, 7) để etcd có quorum
      hosts:
-       nhom11server01:
-         ansible_host: 192.168.1.11   # <-- SỬA
+       nhom15s1:
+         ansible_host: 192.168.1.11
          ansible_user:  server01
-       nhom11server02:
-         ansible_host: 192.168.1.12   # <-- SỬA
+       nhom15s2:
+         ansible_host: 192.168.1.12
          ansible_user:  server02
-       nhom11server03:
-         ansible_host: 192.168.1.13   # <-- SỬA
+       nhom15s3:
+         ansible_host: 192.168.1.13
          ansible_user:  server03
    agent:
      hosts:
-       nhom11agent01:
-         ansible_host: 192.168.1.21   # <-- SỬA
+       nhom15a1:
+         ansible_host: 192.168.1.21
          ansible_user:  agent01
-       nhom11agent02:
-         ansible_host: 192.168.1.22   # <-- SỬA
+       nhom15a2:
+         ansible_host: 192.168.1.22
          ansible_user:  agent02
  
  vars:
    ansible_port: 22
    # ansible_ssh_private_key_file: ~/.ssh/id_ed25519   # bỏ comment nếu dùng khóa riêng khác
  
-   k3s_version: v1.30.2+k3s1          # <-- nên xem bản mới ở github.com/k3s-io/k3s/releases
-   token: "doi-chuoi-bi-mat-nay"      # <-- SỬA: chuỗi bí mật bất kỳ, giữ kín
+   k3s_version: v1.30.2+k3s1
+   token: "nhom15"      # <-- SỬA: chuỗi bí mật bất kỳ, giữ kín
  
    # Mặc định lấy server đầu tiên làm endpoint khi cài
    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
  
    # Thêm IP ảo (VIP của Keepalived) vào chứng chỉ API để sau này truy cập qua VIP không lỗi TLS
-   extra_server_args: "--tls-san 192.168.1.100"   # <-- SỬA: VIP sẽ đặt cho Keepalived
-   extra_agent_args: ""
- 
-   # Tùy chọn thêm (bỏ comment nếu cần):
-   # - Board dùng wifi hoặc nhiều card mạng: chỉ định card cho Flannel
-   #   extra_server_args: "--tls-san 192.168.1.100 --flannel-iface eth0"
-   #   extra_agent_args: "--flannel-iface eth0"
-   # - Tắt Traefik / ServiceLB nếu muốn tự cài ingress hoặc MetalLB:
-   #   extra_server_args: "--tls-san 192.168.1.100 --disable traefik --disable servicelb"
-   # - Siết quyền file config chứa token trên server:
-   #   k3s_server_config_mode: "0640"
+  #  extra_server_args: "--tls-san 192.168.1.100"   # <-- SỬA: VIP sẽ đặt cho Keepalived
+  #  extra_agent_args: ""
