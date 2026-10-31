@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    name="description"
+    content="Explore animal species by conservation status."
+  >
+  <title>Wildlife Atlas | Animal Explorer</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Wildlife Atlas home">
+      <span class="brand-icon" aria-hidden="true">✳</span>
+      <span>Wildlife Atlas</span>
+    </a>
+    <span class="header-note">A field guide to the animal kingdom</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Explore the wild</p>
+      <h1>Every species has a story.</h1>
+      <p class="hero-copy">
+        Discover animal profiles and explore their conservation status.
+      </p>
+      <div class="hero-decoration" aria-hidden="true">🌿</div>
+    </section>
+
+    <section class="explorer" aria-labelledby="explorer-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">The collection</p>
+          <h2 id="explorer-title">Animal species</h2>
+        </div>
+        <span id="result-count" class="result-count" aria-live="polite">
+          Loading…
+        </span>
+      </div>
+
+      <div class="filters">
+        <label for="status-filter">Conservation status</label>
+        <select id="status-filter" disabled>
+          <option value="">Loading statuses…</option>
+        </select>
+
+        <label class="search-label" for="search-input">Search</label>
+        <input
+          id="search-input"
+          type="search"
+          placeholder="Search by common or scientific name"
+          autocomplete="off"
+        >
+      </div>
+
+      <p id="message" class="message" role="status" aria-live="polite">
+        Loading animal data…
+      </p>
+
+      <div id="animal-grid" class="animal-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Species data:
+      <a
+        href="https://globalanimalguide.org/data/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Global Animal Guide</a>.
+      Used under CC BY-NC 4.0.
+    </p>
+  </footer>
+</body>
+</html>
